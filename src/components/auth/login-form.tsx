@@ -70,36 +70,54 @@ export const LoginForm = () => {
   };
 
   return (
-    <CardWrapper
-      headerLabel="Welcome back"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
-      showSocial
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            {showTwoFactor && (
-              <FormField
-                control={form.control}
-                name="code"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Two Factor Code</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="123456"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-            {!showTwoFactor && (
-              <>
+    <>
+      {showTwoFactor && (
+        <CardWrapper
+          headerLabel="Welcome back"
+          backButtonLabel="Back to login ?"
+          backButtonHref="/auth/login"
+          showSocial
+        >
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Two Factor Code</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                          placeholder="123456"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormError message={error || urlError} />
+              <FormSuccess message={success} />
+              <Button disabled={isPending} type="submit" className="w-full">
+                {showTwoFactor ? "Confirm" : "Login"}
+              </Button>
+            </form>
+          </Form>
+        </CardWrapper>
+      )}
+      {!showTwoFactor && (
+        <CardWrapper
+          headerLabel="Welcome back"
+          backButtonLabel="Don't have an account?"
+          backButtonHref="/auth/register"
+          showSocial
+        >
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-4">
                 <FormField
                   control={form.control}
                   name="email"
@@ -144,16 +162,16 @@ export const LoginForm = () => {
                     </FormItem>
                   )}
                 />
-              </>
-            )}
-          </div>
-          <FormError message={error || urlError} />
-          <FormSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
-            {showTwoFactor ? "Confirm" : "Login"}
-          </Button>
-        </form>
-      </Form>
-    </CardWrapper>
+              </div>
+              <FormError message={error || urlError} />
+              <FormSuccess message={success} />
+              <Button disabled={isPending} type="submit" className="w-full">
+                {showTwoFactor ? "Confirm" : "Login"}
+              </Button>
+            </form>
+          </Form>
+        </CardWrapper>
+      )}
+    </>
   );
 };
